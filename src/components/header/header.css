@@ -1,0 +1,19 @@
+#header {
+  padding: 10px;
+  border-bottom: solid #555;
+  margin-bottom: 50px;
+}
+
+#header #menu {
+  display: flex;
+  justify-content: space-around;
+}
+
+#header #menu a {
+  width: 100%;
+  text-align: center;
+}
+
+#header #menu .active {
+  background-color: #999;
+}

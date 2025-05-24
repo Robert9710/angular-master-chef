@@ -1,0 +1,16 @@
+<div id="header">
+  <div id="menu">
+    <a [routerLink]="['/home']" routerLinkActive="active"><h5>Home</h5></a>
+    @if(userName|async){
+    <a [routerLink]="['/bookmarks']" routerLinkActive="active"
+      ><h5>Bookmarks</h5></a
+    >
+    } @for(course of courses;track course.courseId){
+    <a
+      [routerLink]="['/menu/course/', course.courseId]"
+      routerLinkActive="active"
+      ><h5>{{course.courseName}}</h5></a
+    >
+    }
+  </div>
+</div>

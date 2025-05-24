@@ -1,0 +1,27 @@
+<div id="create-recipe-form">
+  @if(!(newRecipe.courseId && newRecipe.recipeName)){
+  <label
+    >Course
+    <select [formControl]="course">
+      <option disabled value="">Select Course</option>
+      @for (course of courses.value(); track course.courseId) {
+      <option value="{{course.courseId}}">{{course.courseName}}</option>
+      }
+    </select>
+  </label>
+  <label>Name <input type="text" [formControl]="recipeName" /></label>
+  } @if(newRecipe.courseId && newRecipe.recipeName){
+  @if(!newRecipe.instructions?.notes){
+  <label>Notes <textarea [formControl]="notes"></textarea></label>
+  }
+  <label>Action <textarea [formControl]="action"></textarea></label>
+  <label>Ingedients <textarea [formControl]="ingredients"></textarea></label>
+  <label
+    >Additional Info <input type="text" [formControl]="additionalInfo"
+  /></label>
+  }
+  <button type="button" (click)="addToRecipe()">Next</button>
+  @if(newRecipe.instructions?.steps){
+  <button type="button" (click)="createRecipe()">Create</button>
+  }
+</div>

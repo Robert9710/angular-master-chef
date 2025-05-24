@@ -1,0 +1,19 @@
+<div id="course-list">
+  @if(showUserNameInput){
+  <input
+    type="text"
+    placeholder="Username"
+    [formControl]="userName"
+    (keydown)="setUserName($event)"
+  />
+  }
+  <!-- <ul>
+    @for(course of courses;track course.courseId){
+    <li>
+      <a [routerLink]="['/menu/course/',course.courseId]"
+        >{{course.courseName}}</a
+      >
+    </li>
+    }
+  </ul> -->
+</div>

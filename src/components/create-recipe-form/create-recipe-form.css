@@ -1,0 +1,9 @@
+#create-recipe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#create-recipe-form textarea {
+  width: 300px;
+}
