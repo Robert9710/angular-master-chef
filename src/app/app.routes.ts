@@ -6,7 +6,7 @@ import { Home } from '../pages/home/home';
 // import { Bookmarks } from '../pages/bookmarks/bookmarks';
 
 export const routes: Routes = [
-  { path: 'home', component: Home },
+  { path: '', component: Home },
   { path: 'create', component: CreateRecipe },
   // { path: 'menu/course/:courseId', component: Recipes },
   // {

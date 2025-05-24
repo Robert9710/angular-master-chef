@@ -1,6 +1,11 @@
 <div id="header">
   <div id="menu">
-    <a [routerLink]="['/home']" routerLinkActive="active"><h5>Home</h5></a>
+    <a
+      [routerLink]="['/']"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}"
+      ><h5>Home</h5></a
+    >
     @if(userName|async){
     <a [routerLink]="['/bookmarks']" routerLinkActive="active"
       ><h5>Bookmarks</h5></a
