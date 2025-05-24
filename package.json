@@ -9,7 +9,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "tsx src/server",
+    "start": "tsx server/server",
     "serv": "nodemon server/server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",

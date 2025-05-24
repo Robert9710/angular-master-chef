@@ -223,5 +223,5 @@ async function removeRecipeFromUserMenu(userName, id) {
   }
   updateUserMenu(userName, userMenu);
 }
-app.use(express.static(process.cwd() + "/dist/angular-master-chef"));
+app.use(express.static(process.cwd() + "/dist/angular-master-chef/browser"));
 app.listen(process.env["PORT"] || 3000);
