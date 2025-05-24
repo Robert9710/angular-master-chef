@@ -4,7 +4,7 @@
     >Course
     <select [formControl]="course">
       <option disabled value="">Select Course</option>
-      @for (course of courses.value(); track course.courseId) {
+      @for (course of courses; track course.courseId) {
       <option value="{{course.courseId}}">{{course.courseName}}</option>
       }
     </select>

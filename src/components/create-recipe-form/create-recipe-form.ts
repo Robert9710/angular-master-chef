@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { AppServicesService } from '../../app/app-services.service';
+// import { AppServicesService } from '../../app/app-services.service';
 import { HttpClient } from '@angular/common/http';
 
 interface Recipe {
@@ -43,12 +43,19 @@ export class CreateRecipeForm {
     recipeName: null,
     instructions: null,
   };
-  data = inject(AppServicesService);
-  courses = this.data.coursesRx;
-  coursesData = this.data.coursesRx;
+  // data = inject(AppServicesService);
+  // courses = this.data.coursesRx;
+  // coursesData = this.data.coursesRx;
+  courses: any;
   http = inject(HttpClient);
 
-  async ngOnInit(): Promise<void> {}
+  async ngOnInit(): Promise<void> {
+    this.http
+      .get('http://localhost:3000/menu/courses')
+      .subscribe((response) => {
+        this.courses = response;
+      });
+  }
 
   addToRecipe() {
     if (!(this.newRecipe.courseId && this.newRecipe.recipeName)) {
