@@ -25,11 +25,9 @@ export class CourseList {
   }
 
   ngOnInit() {
-    this.http
-      .get('http://localhost:3000/menu/courses')
-      .subscribe((response) => {
-        this.courses = response;
-      });
+    this.http.get(location.origin + '/menu/courses').subscribe((response) => {
+      this.courses = response;
+    });
   }
 
   setUserName(event: KeyboardEvent) {

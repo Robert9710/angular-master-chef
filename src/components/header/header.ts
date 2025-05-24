@@ -26,11 +26,9 @@ export class Header {
   }
 
   ngOnInit() {
-    this.http
-      .get('http://localhost:3000/menu/courses')
-      .subscribe((response) => {
-        this.courses = response;
-      });
+    this.http.get(location.origin + '/menu/courses').subscribe((response) => {
+      this.courses = response;
+    });
     // console.log(this.route.snapshot.routeConfig?.title);
   }
 }

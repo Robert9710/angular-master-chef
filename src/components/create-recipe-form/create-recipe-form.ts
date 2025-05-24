@@ -50,11 +50,9 @@ export class CreateRecipeForm {
   http = inject(HttpClient);
 
   async ngOnInit(): Promise<void> {
-    this.http
-      .get('http://localhost:3000/menu/courses')
-      .subscribe((response) => {
-        this.courses = response;
-      });
+    this.http.get(location.origin + '/menu/courses').subscribe((response) => {
+      this.courses = response;
+    });
   }
 
   addToRecipe() {
@@ -130,7 +128,7 @@ export class CreateRecipeForm {
       this.addToRecipe();
     }
     this.http
-      .post('http://localhost:3000/menu/add/recipe', this.newRecipe)
+      .post(location.origin + '/menu/add/recipe', this.newRecipe)
       .subscribe((response) => {});
     this.course.setValue('');
     this.recipeName.setValue('');
