@@ -1,14 +1,23 @@
-// express, nodemon, fs, cors
 import express from "express";
 import cors from "cors";
 import fs from "fs";
+
+// const date = new Date();
+// fs.copyFile(
+//   "./server/data/Recipes.json",
+//   `./server/data/Backup${date.getDate()}${date.getMonth() + 1}.json`,
+//   (err) => {}
+// );
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-const FILE_NAMES = { recipes: "Recipes", personalMenu: "PersonalMenu" };
+const FILES = {
+  recipes: { fileName: "Recipes", locked: false },
+  personalMenu: { fileName: "PersonalMenu", locked: false },
+};
 
 app.get("/menu/all", async (req, res) => {
   res.json(await getRecipesForCourse("all"));
@@ -27,7 +36,7 @@ app.get("/menu/:courseId/:recipeId", async (req, res) => {
 });
 
 app.post("/menu/add/recipe", async (req, res) => {
-  const menuData = await getData(FILE_NAMES.recipes);
+  const menuData = await getData(FILES.recipes.fileName);
   let id = 0;
   menuData.forEach((course) => {
     course.recipes.forEach((recipe) => {
@@ -45,7 +54,7 @@ app.post("/menu/add/recipe", async (req, res) => {
       });
     }
   });
-  updateData(FILE_NAMES.recipes, menuData);
+  updateData(FILES.recipes.fileName, menuData);
   res.status(204).send();
 });
 
@@ -59,28 +68,54 @@ app.post("/menu/recipe/:recipeId/bookmark", async (req, res) => {
 });
 
 app.delete("/user/:userName/bookmark/:bookmarkId", async (req, res) => {
-  await removeRecipeFromUserMenu(req.body.userName, req.params.bookmarkId);
+  await removeRecipeFromUserMenu(req.params.userName, req.params.bookmarkId);
   res.json(await getUserMenu(req.params.userName));
 });
 
 function getData(fileName) {
   return new Promise((res, rej) => {
-    fs.readFile(`./server/data/${fileName}.json`, (err, data) => {
-      res(JSON.parse(data));
-    });
+    if (!isFileLocked(fileName)) {
+      fs.readFile(`./server/data/${fileName}.json`, (err, data) => {
+        res(JSON.parse(data));
+      });
+    } else {
+      res(setTimeout(getData, 100, fileName));
+    }
+  });
+}
+
+function isFileLocked(fileName) {
+  return Object.keys(FILES).find(
+    (file) => file.fileName === fileName && file.locked
+  );
+}
+
+function toggleFileLock(fileName, lockFile) {
+  Object.keys(FILES).forEach((file) => {
+    if (file.fileName === fileName) {
+      file.locked = lockFile;
+    }
   });
 }
 
 function updateData(fileName, menuData) {
-  fs.writeFile(
-    `./server/data/${fileName}.json`,
-    JSON.stringify(menuData),
-    (err) => {}
-  );
+  return new Promise((res, rej) => {
+    if (!isFileLocked(fileName)) {
+      fs.writeFile(
+        `./server/data/${fileName}.json`,
+        JSON.stringify(menuData),
+        (err) => {
+          res();
+        }
+      );
+    } else {
+      res(setTimeout(getData, 100, fileName));
+    }
+  });
 }
 
 async function getRecipe(recipeId) {
-  const menuData = await getData(FILE_NAMES.recipes);
+  const menuData = await getData(FILES.recipes.fileName);
   for (const course of menuData) {
     for (const recipe of course.recipes) {
       if (recipe.id === recipeId) {
@@ -91,7 +126,7 @@ async function getRecipe(recipeId) {
 }
 
 async function getRecipesForCourse(courseId) {
-  const menuData = await getData(FILE_NAMES.recipes);
+  const menuData = await getData(FILES.recipes.fileName);
   if (courseId === "all") {
     let response = [];
     menuData.forEach((course) => (response = response.concat(course.recipes)));
@@ -102,7 +137,7 @@ async function getRecipesForCourse(courseId) {
 }
 
 async function getRecipesNamesForCourse(courseId) {
-  const menuData = await getData(FILE_NAMES.recipes);
+  const menuData = await getData(FILES.recipes.fileName);
   if (courseId === "all") {
     let response = [];
     menuData.forEach(
@@ -119,7 +154,7 @@ async function getRecipesNamesForCourse(courseId) {
 }
 
 async function getCourses() {
-  const menuData = await getData(FILE_NAMES.recipes);
+  const menuData = await getData(FILES.recipes.fileName);
   return menuData.map((course) => ({
     courseId: course.id,
     courseName: course.course,
@@ -127,12 +162,12 @@ async function getCourses() {
 }
 
 async function getUserMenu(userName) {
-  const data = await getData(FILE_NAMES.personalMenu);
+  const data = await getData(FILES.personalMenu.fileName);
   return data.find((userData) => userData.userName === userName);
 }
 
 async function updateUserMenu(userName, userMenu) {
-  const data = await getData(FILE_NAMES.personalMenu);
+  const data = await getData(FILES.personalMenu.fileName);
   let userDataIndex = data.findIndex(
     (userData) => userData.userName === userName
   );
@@ -141,9 +176,8 @@ async function updateUserMenu(userName, userMenu) {
   } else {
     data.push(userMenu);
   }
-  console.log(data[0].items.length);
   fs.writeFile(
-    `./server/data/${FILE_NAMES.personalMenu}.json`,
+    `./server/data/${FILES.personalMenu.fileName}.json`,
     JSON.stringify(data),
     (err) => {}
   );
@@ -151,7 +185,7 @@ async function updateUserMenu(userName, userMenu) {
 
 async function addRecipeToUserMenu(userName, recipeId) {
   let userMenu = await getUserMenu(userName);
-  const menuData = await getData(FILE_NAMES.recipes);
+  const menuData = await getData(FILES.recipes.fileName);
   if (!userMenu) {
     userMenu = { userName, items: [] };
   }
@@ -189,4 +223,5 @@ async function removeRecipeFromUserMenu(userName, id) {
   }
   updateUserMenu(userName, userMenu);
 }
-app.listen(3000);
+app.use(express.static(process.cwd() + "/dist/angular-master-chef"));
+app.listen(process.env["PORT"] || 3000);
