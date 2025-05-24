@@ -6,6 +6,6 @@ import { Header } from '../../components/header/header';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, Header],
-  templateUrl: './Base.html',
+  templateUrl: './base.html',
 })
 export class Base {}
