@@ -50,9 +50,11 @@ export class CreateRecipeForm {
   http = inject(HttpClient);
 
   async ngOnInit(): Promise<void> {
-    this.http.get(location.origin + '/menu/courses').subscribe((response) => {
-      this.courses = response;
-    });
+    this.http
+      .get('https://angular-master-chef.onrender.com' + '/menu/courses')
+      .subscribe((response) => {
+        this.courses = response;
+      });
   }
 
   addToRecipe() {
@@ -128,7 +130,10 @@ export class CreateRecipeForm {
       this.addToRecipe();
     }
     this.http
-      .post(location.origin + '/menu/add/recipe', this.newRecipe)
+      .post(
+        'https://angular-master-chef.onrender.com' + '/menu/add/recipe',
+        this.newRecipe
+      )
       .subscribe((response) => {});
     this.course.setValue('');
     this.recipeName.setValue('');

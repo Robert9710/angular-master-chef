@@ -26,9 +26,11 @@ export class Header {
   }
 
   ngOnInit() {
-    this.http.get(location.origin + '/menu/courses').subscribe((response) => {
-      this.courses = response;
-    });
+    this.http
+      .get('https://angular-master-chef.onrender.com' + '/menu/courses')
+      .subscribe((response) => {
+        this.courses = response;
+      });
     // console.log(this.route.snapshot.routeConfig?.title);
   }
 }
