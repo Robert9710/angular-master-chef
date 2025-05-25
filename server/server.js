@@ -100,17 +100,13 @@ function toggleFileLock(fileName, lockFile) {
 
 function updateData(fileName, menuData) {
   return new Promise((res, rej) => {
-    if (!isFileLocked(fileName)) {
-      fs.writeFile(
-        `./server/data/${fileName}.json`,
-        JSON.stringify(menuData),
-        (err) => {
-          res();
-        }
-      );
-    } else {
-      res(setTimeout(getData, 100, fileName));
-    }
+    fs.writeFile(
+      `./server/data/${fileName}.json`,
+      JSON.stringify(menuData),
+      (err) => {
+        res();
+      }
+    );
   });
 }
 
@@ -167,20 +163,24 @@ async function getUserMenu(userName) {
 }
 
 async function updateUserMenu(userName, userMenu) {
-  const data = await getData(FILES.personalMenu.fileName);
-  let userDataIndex = data.findIndex(
-    (userData) => userData.userName === userName
-  );
-  if (userDataIndex !== -1) {
-    data[userDataIndex] = userMenu;
-  } else {
-    data.push(userMenu);
-  }
-  fs.writeFile(
-    `./server/data/${FILES.personalMenu.fileName}.json`,
-    JSON.stringify(data),
-    (err) => {}
-  );
+  return new Promise(async (res, rej) => {
+    const data = await getData(FILES.personalMenu.fileName);
+    let userDataIndex = data.findIndex(
+      (userData) => userData.userName === userName
+    );
+    if (userDataIndex !== -1) {
+      data[userDataIndex] = userMenu;
+    } else {
+      data.push(userMenu);
+    }
+    fs.writeFile(
+      `./server/data/${FILES.personalMenu.fileName}.json`,
+      JSON.stringify(data),
+      (err) => {
+        res();
+      }
+    );
+  });
 }
 
 async function addRecipeToUserMenu(userName, recipeId) {
@@ -211,7 +211,7 @@ async function addRecipeToUserMenu(userName, recipeId) {
         });
       }
     });
-    updateUserMenu(userName, userMenu);
+    await updateUserMenu(userName, userMenu);
   }
 }
 
@@ -221,7 +221,7 @@ async function removeRecipeFromUserMenu(userName, id) {
   if (itemIndex !== -1) {
     userMenu.items.splice(itemIndex, 1);
   }
-  updateUserMenu(userName, userMenu);
+  await updateUserMenu(userName, userMenu);
 }
 app.use(express.static(process.cwd() + "/dist/angular-master-chef/browser"));
 app.listen(process.env["PORT"] || 3000);
