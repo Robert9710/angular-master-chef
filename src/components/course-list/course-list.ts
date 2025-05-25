@@ -3,9 +3,10 @@ import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState } from '../../app/appState';
-import { selectUser } from '../../store/user.selector';
+import { AppState } from '../../app/app.state';
+import { selectUsername } from '../../store/user.selector';
 import { setUserName } from '../../store/user.actions';
+import { getApiDomain } from '../../app/helper';
 
 @Component({
   selector: 'course-list',
@@ -16,26 +17,25 @@ import { setUserName } from '../../store/user.actions';
 export class CourseList {
   http = inject(HttpClient);
   courses: any = [];
-  userName$: Observable<string>;
-  userName = new FormControl('');
+  username: Observable<string>;
+  apiDomain = getApiDomain();
+  newUsername = new FormControl('');
   showUserNameInput = !sessionStorage.getItem('userName');
 
   constructor(private store: Store<AppState>) {
-    this.userName$ = this.store.select(selectUser);
+    this.username = this.store.select(selectUsername);
   }
 
   ngOnInit() {
-    this.http
-      .get('https://angular-master-chef.onrender.com' + '/menu/courses')
-      .subscribe((response) => {
-        this.courses = response;
-      });
+    this.http.get(this.apiDomain + '/menu/courses').subscribe((response) => {
+      this.courses = response;
+    });
   }
 
   setUserName(event: KeyboardEvent) {
-    if (event.key === 'Enter' && this.userName.value) {
-      this.store.dispatch(setUserName({ userName: this.userName.value }));
-      sessionStorage.setItem('userName', this.userName.value);
+    if (event.key === 'Enter' && this.newUsername.value) {
+      this.store.dispatch(setUserName({ userName: this.newUsername.value }));
+      sessionStorage.setItem('userName', this.newUsername.value);
       this.showUserNameInput = false;
     }
   }

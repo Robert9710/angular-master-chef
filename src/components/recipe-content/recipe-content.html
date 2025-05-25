@@ -1,0 +1,27 @@
+<div id="recipe-content">
+  @if(recipe){
+  <h1>{{recipe.name}}</h1>
+  <h2>Ingredients</h2>
+  @for(step of recipe.instructions.steps;track $index){ @for(ingredient of
+  step.ingredients;track $index){
+  <div class="recipe-content-ingredients-container">
+    <h4>{{ingredient.quantity}} {{ingredient.name}}</h4>
+    <button>Add to Shopping List</button>
+  </div>
+  } } @if(recipe.instructions.notes){
+  <h2>Notes</h2>
+  <h3 class="recipe-content-notes">{{recipe.instructions.notes}}</h3>
+  }
+  <h2>Steps</h2>
+  @for(step of recipe.instructions.steps;track $index){
+  <div class="recipe-content-step">
+    <h3>{{step.action}}</h3>
+    @for(ingredient of step.ingredients;track $index){
+    <div class="recipe-content-ingredients-container">
+      <h4>{{ingredient.quantity}} {{ingredient.name}}</h4>
+    </div>
+    }
+    <h3>{{step.postAction}}</h3>
+  </div>
+  } }
+</div>

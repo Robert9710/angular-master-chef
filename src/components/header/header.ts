@@ -3,9 +3,10 @@ import { Component, inject, Input } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState } from '../../app/appState';
-import { selectUser } from '../../store/user.selector';
+import { AppState } from '../../app/app.state';
+import { selectUsername } from '../../store/user.selector';
 import { AsyncPipe } from '@angular/common';
+import { getApiDomain } from '../../app/helper';
 
 @Component({
   selector: 'app-header',
@@ -14,23 +15,20 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './header.css',
 })
 export class Header {
-  // @Input() newUserName: any;
   http = inject(HttpClient);
   private readonly route = inject(ActivatedRoute);
-  userName: Observable<string>;
-  // userName$: Observable<string>;
+  username: Observable<string>;
+  apiDomain = getApiDomain();
   courses: any = null;
 
   constructor(private store: Store<AppState>) {
-    this.userName = this.store.select(selectUser);
+    this.username = this.store.select(selectUsername);
   }
 
-  ngOnInit() {
-    this.http
-      .get('https://angular-master-chef.onrender.com' + '/menu/courses')
-      .subscribe((response) => {
-        this.courses = response;
-      });
+  async ngOnInit() {
+    this.http.get(this.apiDomain + '/menu/courses').subscribe((response) => {
+      this.courses = response;
+    });
     // console.log(this.route.snapshot.routeConfig?.title);
   }
 }

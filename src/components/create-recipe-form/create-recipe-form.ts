@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-// import { AppServicesService } from '../../app/app-services.service';
 import { HttpClient } from '@angular/common/http';
+import { getApiDomain } from '../../app/helper';
 
 interface Recipe {
   courseId: string | null;
@@ -32,6 +32,8 @@ interface Instructions {
   styleUrl: './create-recipe-form.css',
 })
 export class CreateRecipeForm {
+  http = inject(HttpClient);
+  apiDomain = getApiDomain();
   course = new FormControl('');
   recipeName = new FormControl('');
   notes = new FormControl('');
@@ -43,18 +45,12 @@ export class CreateRecipeForm {
     recipeName: null,
     instructions: null,
   };
-  // data = inject(AppServicesService);
-  // courses = this.data.coursesRx;
-  // coursesData = this.data.coursesRx;
   courses: any;
-  http = inject(HttpClient);
 
   async ngOnInit(): Promise<void> {
-    this.http
-      .get('https://angular-master-chef.onrender.com' + '/menu/courses')
-      .subscribe((response) => {
-        this.courses = response;
-      });
+    this.http.get(this.apiDomain + '/menu/courses').subscribe((response) => {
+      this.courses = response;
+    });
   }
 
   addToRecipe() {

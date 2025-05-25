@@ -1,0 +1,16 @@
+<div id="recipe-list">
+  <ul>
+    @if(recipes.length===0){
+    <h3>No Recipes Available For This Course</h3>
+    } @for (recipe of recipes;track recipe.id){
+    <li>
+      <a [routerLink]="['/menu/course',courseId,'recipe',recipe.id]"
+        ><h4>{{recipe.name}}</h4></a
+      >
+      @if((username|async) && checkIfRecipeIsBookmarked(recipe.id)){
+      <button (click)="bookmarkRecipe(recipe.id)">Bookmark Recipe</button>
+      }
+    </li>
+    }
+  </ul>
+</div>
