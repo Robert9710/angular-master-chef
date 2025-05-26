@@ -2,13 +2,6 @@ import express from "express";
 import cors from "cors";
 import fs from "fs";
 
-// const date = new Date();
-// fs.copyFile(
-//   "./server/data/Recipes.json",
-//   `./server/data/Backup${date.getDate()}${date.getMonth() + 1}.json`,
-//   (err) => {}
-// );
-
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -36,25 +29,7 @@ app.get("/menu/:courseId/:recipeId", async (req, res) => {
 });
 
 app.post("/menu/add/recipe", async (req, res) => {
-  const menuData = await getData(FILES.recipes.fileName);
-  let id = 0;
-  menuData.forEach((course) => {
-    course.recipes.forEach((recipe) => {
-      if (parseInt(recipe.id) > id) {
-        id = recipe.id;
-      }
-    });
-  });
-  menuData.forEach((course) => {
-    if (course.id === req.body.courseId) {
-      course.recipes.push({
-        id: (++id).toString(),
-        name: req.body.recipeName,
-        instructions: { ...req.body.instructions },
-      });
-    }
-  });
-  updateData(FILES.recipes.fileName, menuData);
+  await addNewRecipe(req.body);
   res.status(204).send();
 });
 
@@ -74,27 +49,9 @@ app.delete("/user/:userName/bookmark/:bookmarkId", async (req, res) => {
 
 function getData(fileName) {
   return new Promise((res, rej) => {
-    if (!isFileLocked(fileName)) {
-      fs.readFile(`./server/data/${fileName}.json`, (err, data) => {
-        res(JSON.parse(data));
-      });
-    } else {
-      res(setTimeout(getData, 100, fileName));
-    }
-  });
-}
-
-function isFileLocked(fileName) {
-  return Object.keys(FILES).find(
-    (file) => file.fileName === fileName && file.locked
-  );
-}
-
-function toggleFileLock(fileName, lockFile) {
-  Object.keys(FILES).forEach((file) => {
-    if (file.fileName === fileName) {
-      file.locked = lockFile;
-    }
+    fs.readFile(`./server/data/${fileName}.json`, (err, data) => {
+      res(JSON.parse(data));
+    });
   });
 }
 
@@ -108,6 +65,28 @@ function updateData(fileName, menuData) {
       }
     );
   });
+}
+
+async function addNewRecipe(recipeContent) {
+  const menuData = await getData(FILES.recipes.fileName);
+  let id = 0;
+  menuData.forEach((course) => {
+    course.recipes.forEach((recipe) => {
+      if (parseInt(recipe.id) > id) {
+        id = recipe.id;
+      }
+    });
+  });
+  menuData.forEach((course) => {
+    if (course.id === recipeContent.courseId) {
+      course.recipes.push({
+        id: (++id).toString(),
+        name: recipeContent.recipeName,
+        instructions: { ...recipeContent.instructions },
+      });
+    }
+  });
+  await updateData(FILES.recipes.fileName, menuData);
 }
 
 async function getRecipe(recipeId) {

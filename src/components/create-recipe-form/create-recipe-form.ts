@@ -126,10 +126,7 @@ export class CreateRecipeForm {
       this.addToRecipe();
     }
     this.http
-      .post(
-        'https://angular-master-chef.onrender.com' + '/menu/add/recipe',
-        this.newRecipe
-      )
+      .post(getApiDomain() + '/menu/add/recipe', this.newRecipe)
       .subscribe((response) => {});
     this.course.setValue('');
     this.recipeName.setValue('');

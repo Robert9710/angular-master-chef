@@ -176,6 +176,101 @@
             }
           ]
         }
+      },
+      {
+        "id": "37",
+        "name": "Sheet Pan Eggs and Veggies",
+        "instructions": {
+          "notes": "Preheat oven to 200°C. Slice vegetables.",
+          "steps": [
+            {
+              "action": "Mix",
+              "ingredients": [
+                { "name": "bell peppers", "quantity": "3" },
+                { "name": "onion", "quantity": "1" },
+                { "name": "cumin", "quantity": "1 tsp" },
+                { "name": "thyme", "quantity": "¼ tsp" },
+                { "name": "oregano", "quantity": "¼ tsp" },
+                { "name": "marjoram", "quantity": "¼ tsp" },
+                { "name": "sumac", "quantity": "¼ tsp" },
+                { "name": "coriander", "quantity": "¼ tsp" },
+                { "name": "salt", "quantity": "" },
+                { "name": "black pepper", "quantity": "" },
+                { "name": "oil", "quantity": "" }
+              ],
+              "postAction": "Transfer to a baking tray and bake for 10-15 minutes."
+            },
+            {
+              "action": "Take tray out of the oven, make some spaces in the tray and crack",
+              "ingredients": [{ "name": "eggs", "quantity": "6" }],
+              "postAction": "Put tray back in the oven for a few more minutes until eggs are cooked."
+            },
+            {
+              "action": "Take tray out of the oven and season with",
+              "ingredients": [
+                { "name": "tomatoes", "quantity": "" },
+                { "name": "feta cheese", "quantity": "" },
+                { "name": "parsley", "quantity": "" },
+                { "name": "coriander", "quantity": "" }
+              ],
+              "postAction": ""
+            }
+          ]
+        }
+      },
+      {
+        "id": "38",
+        "name": "Crustless Quiche with Spinach and Mushrooms",
+        "instructions": {
+          "notes": "Preheat oven to 190°C. Slice vegetables. Cube the Fontina cheese.",
+          "steps": [
+            {
+              "action": "Whisk aggressively",
+              "ingredients": [
+                { "name": "eggs", "quantity": "5" },
+                { "name": "whole milk", "quantity": "1 cup" }
+              ],
+              "postAction": ""
+            },
+            {
+              "action": "Heat oil in a large skillet over medium heat and add",
+              "ingredients": [
+                { "name": "onion", "quantity": "1" },
+                { "name": "mushrooms", "quantity": "250g" },
+                { "name": "garlic", "quantity": "3 cloves" },
+                { "name": "dried thyme", "quantity": "1 tsp" },
+                { "name": "salt", "quantity": "" },
+                { "name": "black pepper", "quantity": "" }
+              ],
+              "postAction": "Cook until the mushrooms shrink and the onions are translucent, about 10 to 15 minutes."
+            },
+            {
+              "action": "Drizzle over vegetables",
+              "ingredients": [
+                { "name": "balsamic vinegar", "quantity": "1½ tbsp" }
+              ],
+              "postAction": "Cook for 1-2 minutes."
+            },
+            {
+              "action": "Add",
+              "ingredients": [{ "name": "spinach", "quantity": "2 cups" }],
+              "postAction": "Cook for about 3 minutes."
+            },
+            {
+              "action": "Oil a 23cm pie dish and add",
+              "ingredients": [
+                { "name": "cooked vegetables", "quantity": "" },
+                { "name": "Fontina cheese/mozzarella", "quantity": "120g" }
+              ],
+              "postAction": "Pour egg mixture over the top."
+            },
+            {
+              "action": "Transfer to oven and cook for 35 minutes until the centre is set.",
+              "ingredients": [],
+              "postAction": ""
+            }
+          ]
+        }
       }
     ]
   },
@@ -1922,6 +2017,115 @@
       }
     ]
   },
-  { "id": "5", "course": "Desserts", "recipes": [] },
+  {
+    "id": "5",
+    "course": "Desserts",
+    "recipes": [
+      {
+        "id": "39",
+        "name": "Raspberry Clafoutis",
+        "instructions": {
+          "notes": "Preheat oven to 190°C. Butter a 23cm baking dish.",
+          "steps": [
+            {
+              "action": "In a bowl toss",
+              "ingredients": [
+                { "name": "raspberries", "quantity": "350g" },
+                { "name": "sugar", "quantity": "1 tbsp" }
+              ],
+              "postAction": ""
+            },
+            {
+              "action": "Blend",
+              "ingredients": [
+                { "name": "sugar", "quantity": "½ cup" },
+                { "name": "lavender (optional)", "quantity": "" }
+              ],
+              "postAction": "Process until the lavender is mostly ground, about 2 minutes."
+            },
+            {
+              "action": "Add and blend",
+              "ingredients": [
+                { "name": "milk", "quantity": "½ cup" },
+                { "name": "crème fraiche", "quantity": "½ cup" },
+                { "name": "eggs", "quantity": "4" },
+                { "name": "salt", "quantity": "" }
+              ],
+              "postAction": "Process to combine."
+            },
+            {
+              "action": "Add",
+              "ingredients": [{ "name": "flour", "quantity": "43g" }],
+              "postAction": "Pulse just to combine."
+            },
+            {
+              "action": "Arrange the sugared berries in the baking dish, then pour the egg mixture over them. Bake until the cake is golden and the centre springs back when lightly touched, about 35 minutes.",
+              "ingredients": [],
+              "postAction": "Serve with whipped crème fraiche or Greek yogurt."
+            }
+          ]
+        }
+      },
+      {
+        "id": "40",
+        "name": "Cheesecake",
+        "instructions": {
+          "notes": "Preheat oven to 200°C. Butter a 24cm cake dish.",
+          "steps": [
+            {
+              "action": "Blend",
+              "ingredients": [
+                { "name": "digestive biscuits", "quantity": "200g" }
+              ],
+              "postAction": "Process to a fine powder."
+            },
+            {
+              "action": "Mix biscuits with",
+              "ingredients": [
+                { "name": "melted butter", "quantity": "80g" },
+                { "name": "sugar", "quantity": "3 tbsp" }
+              ],
+              "postAction": "Transfer biscuits to the cake dish and press to create a leveled layer. Place in the oven for 8-10 minutes."
+            },
+            {
+              "action": "Take cake dish out and reduce oven temperature to 150°C.",
+              "ingredients": [],
+              "postAction": ""
+            },
+            {
+              "action": "Whisk",
+              "ingredients": [
+                { "name": "cream cheese", "quantity": "1kg" },
+                { "name": "sugar", "quantity": "150g" },
+                { "name": "flour", "quantity": "3 tbsp" }
+              ],
+              "postAction": ""
+            },
+            {
+              "action": "Add and whisk",
+              "ingredients": [
+                {
+                  "name": "sour or whipping cream",
+                  "quantity": "200g or 150ml"
+                },
+                { "name": "vanilla paste", "quantity": "1 tsp" }
+              ],
+              "postAction": "Process to a soft cream."
+            },
+            {
+              "action": "Add and whisk",
+              "ingredients": [{ "name": "eggs", "quantity": "3" }],
+              "postAction": "Add eggs 1 by 1 and process until incorporated in the mixture."
+            },
+            {
+              "action": "Pour resulted cream over biscuits and bake for 50-60 minutes.",
+              "ingredients": [],
+              "postAction": "Cool in the fridge for 3 hours before serving."
+            }
+          ]
+        }
+      }
+    ]
+  },
   { "id": "6", "course": "Others", "recipes": [] }
 ]

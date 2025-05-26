@@ -1,0 +1,18 @@
+<div id="bookmarks-list">
+  <ul>
+    @for(bookmark of bookmarks.items;track bookmark.id){
+    <li class="row bookmark-item-container">
+      <a
+        class="col-6"
+        [routerLink]="['/menu/course',bookmark.courseId,'recipe',bookmark.recipeId]"
+        >{{bookmark.recipeName}}{{bookmark.id}}</a
+      ><a class="col-3" [routerLink]="['/menu/course',bookmark.courseId]"
+        >{{bookmark.courseName}}</a
+      >
+      <button class="col-3" (click)="removeBookmark(bookmark.id)">
+        Remove Recipe
+      </button>
+    </li>
+    }
+  </ul>
+</div>

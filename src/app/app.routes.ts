@@ -3,7 +3,7 @@ import { CreateRecipe } from '../pages/create-recipe/create-recipe';
 import { Home } from '../pages/home/home';
 import { Recipes } from '../pages/recipes/recipes';
 import { ViewRecipe } from '../pages/view-recipe/view-recipe';
-// import { Bookmarks } from '../pages/bookmarks/bookmarks';
+import { Bookmarks } from '../pages/bookmarks/bookmarks';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -14,8 +14,8 @@ export const routes: Routes = [
     component: ViewRecipe,
     title: 'ViewRecipe',
   },
-  // {
-  //   path: 'bookmarks',
-  //   component: Bookmarks,
-  // },
+  {
+    path: 'bookmarks',
+    component: Bookmarks,
+  },
 ];
