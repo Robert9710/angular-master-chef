@@ -138,7 +138,7 @@ async function getCourses() {
 
 async function getUserMenu(userName) {
   const data = await getData(FILES.personalMenu.fileName);
-  return data.find((userData) => userData.userName === userName);
+  return data.find((userData) => userData.userName === userName) || {};
 }
 
 async function updateUserMenu(userName, userMenu) {
@@ -165,7 +165,7 @@ async function updateUserMenu(userName, userMenu) {
 async function addRecipeToUserMenu(userName, recipeId) {
   let userMenu = await getUserMenu(userName);
   const menuData = await getData(FILES.recipes.fileName);
-  if (!userMenu) {
+  if (Object.keys(userMenu).length === 0) {
     userMenu = { userName, items: [] };
   }
   const isDuplicateRecipeId =
