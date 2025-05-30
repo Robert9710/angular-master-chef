@@ -161,26 +161,26 @@ async function getUserMenu(userName) {
 
 async function updateUserMenu(userName, userMenu) {
   return new Promise(async (res, rej) => {
-    const response = await fetch(
-      `https://api.jsonbin.io/v3/b/${BookmarksBinId}`,
-      {
-        method: "GET",
-        headers: {
-          "X-Access-Key": AccessKey,
-          "X-Bin-Meta": false,
-        },
-      }
-    );
-    const data = await response.json();
-    let userDataIndex = data.findIndex(
-      (userData) => userData.userName === userName
-    );
-    if (userDataIndex !== -1) {
-      data[userDataIndex] = userMenu;
-    } else {
-      data.push(userMenu);
-    }
     if (process.env["PORT"]) {
+      const response = await fetch(
+        `https://api.jsonbin.io/v3/b/${BookmarksBinId}`,
+        {
+          method: "GET",
+          headers: {
+            "X-Access-Key": AccessKey,
+            "X-Bin-Meta": false,
+          },
+        }
+      );
+      const data = await response.json();
+      let userDataIndex = data.findIndex(
+        (userData) => userData.userName === userName
+      );
+      if (userDataIndex !== -1) {
+        data[userDataIndex] = userMenu;
+      } else {
+        data.push(userMenu);
+      }
       const resp = await fetch(
         `https://api.jsonbin.io/v3/b/${BookmarksBinId}`,
         {
@@ -193,6 +193,7 @@ async function updateUserMenu(userName, userMenu) {
           body: JSON.stringify(data),
         }
       );
+      res();
     } else {
       const data = await getData(FILES.personalMenu.fileName);
       let userDataIndex = data.findIndex(
