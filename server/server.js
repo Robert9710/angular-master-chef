@@ -7,6 +7,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+const BookmarksBinId = "683989948960c979a5a30a27";
+const AccessKey = process.env["ACCESS_KEY"];
+
 const FILES = {
   recipes: { fileName: "Recipes", locked: false },
   personalMenu: { fileName: "PersonalMenu", locked: false },
@@ -137,28 +140,58 @@ async function getCourses() {
 }
 
 async function getUserMenu(userName) {
-  const data = await getData(FILES.personalMenu.fileName);
+  let data;
+  if (process.env["PORT"]) {
+    const response = await fetch(
+      `https://api.jsonbin.io/v3/b/${BookmarksBinId}`,
+      {
+        method: "GET",
+        headers: {
+          "X-Access-Key": AccessKey,
+          "X-Bin-Meta": false,
+        },
+      }
+    );
+    data = await response.json();
+  } else {
+    data = await getData(FILES.personalMenu.fileName);
+  }
   return data.find((userData) => userData.userName === userName) || {};
 }
 
 async function updateUserMenu(userName, userMenu) {
   return new Promise(async (res, rej) => {
-    const data = await getData(FILES.personalMenu.fileName);
-    let userDataIndex = data.findIndex(
-      (userData) => userData.userName === userName
-    );
-    if (userDataIndex !== -1) {
-      data[userDataIndex] = userMenu;
+    if (process.env["PORT"]) {
+      const resp = await fetch(
+        `https://api.jsonbin.io/v3/b/${BookmarksBinId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Access-Key": AccessKey,
+            "X-Bin-Meta": false,
+          },
+          body: JSON.stringify(data),
+        }
+      );
     } else {
-      data.push(userMenu);
-    }
-    fs.writeFile(
-      `./server/data/${FILES.personalMenu.fileName}.json`,
-      JSON.stringify(data),
-      (err) => {
-        res();
+      const data = await getData(FILES.personalMenu.fileName);
+      let userDataIndex = data.findIndex(
+        (userData) => userData.userName === userName
+      );
+      if (userDataIndex !== -1) {
+        data[userDataIndex] = userMenu;
+      } else {
+        data.push(userMenu);
       }
-    );
+      fs.writeFile(
+        `./server/data/${FILES.personalMenu.fileName}.json`,
+        JSON.stringify(data),
+        (err) => {
+          res();
+        }
+      );
+    }
   });
 }
 
