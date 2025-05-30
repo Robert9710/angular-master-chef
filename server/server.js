@@ -42,12 +42,12 @@ app.get("/user/:userName/bookmarks", async (req, res) => {
 
 app.post("/menu/recipe/:recipeId/bookmark", async (req, res) => {
   await addRecipeToUserMenu(req.body.userName, req.params.recipeId);
-  res.json(await getUserMenu(req.params.userName));
+  res.status(204).send();
 });
 
 app.delete("/user/:userName/bookmark/:bookmarkId", async (req, res) => {
   await removeRecipeFromUserMenu(req.params.userName, req.params.bookmarkId);
-  res.json(await getUserMenu(req.params.userName));
+  res.status(204).send();
 });
 
 function getData(fileName) {
@@ -161,6 +161,25 @@ async function getUserMenu(userName) {
 
 async function updateUserMenu(userName, userMenu) {
   return new Promise(async (res, rej) => {
+    const response = await fetch(
+      `https://api.jsonbin.io/v3/b/${BookmarksBinId}`,
+      {
+        method: "GET",
+        headers: {
+          "X-Access-Key": AccessKey,
+          "X-Bin-Meta": false,
+        },
+      }
+    );
+    const data = await response.json();
+    let userDataIndex = data.findIndex(
+      (userData) => userData.userName === userName
+    );
+    if (userDataIndex !== -1) {
+      data[userDataIndex] = userMenu;
+    } else {
+      data.push(userMenu);
+    }
     if (process.env["PORT"]) {
       const resp = await fetch(
         `https://api.jsonbin.io/v3/b/${BookmarksBinId}`,

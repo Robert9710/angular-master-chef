@@ -42,7 +42,11 @@ export class BookmarksList {
       this.http
         .delete(`${this.apiDomain}/user/${value}/bookmark/${bookmarkId}`)
         .subscribe((response) => {
-          this.bookmarks = response;
+          this.http
+            .get(`${this.apiDomain}/user/${value}/bookmarks`)
+            .subscribe((response) => {
+              this.bookmarks = response;
+            });
         });
     });
   }
