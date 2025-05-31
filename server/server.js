@@ -15,6 +15,8 @@ const FILES = {
   personalMenu: { fileName: "PersonalMenu", locked: false },
 };
 
+let cachedBookmarks = [];
+
 app.get("/menu/all", async (req, res) => {
   res.json(await getRecipesForCourse("all"));
 });
@@ -51,10 +53,27 @@ app.delete("/user/:userName/bookmark/:bookmarkId", async (req, res) => {
 });
 
 function getData(fileName) {
-  return new Promise((res, rej) => {
-    fs.readFile(`./server/data/${fileName}.json`, (err, data) => {
-      res(JSON.parse(data));
-    });
+  return new Promise(async (res, rej) => {
+    if (process.env["PORT"] && !fileName) {
+      if (cachedBookmarks.length === 0) {
+        const response = await fetch(
+          `https://api.jsonbin.io/v3/b/${BookmarksBinId}`,
+          {
+            method: "GET",
+            headers: {
+              "X-Access-Key": AccessKey,
+              "X-Bin-Meta": false,
+            },
+          }
+        );
+        cachedBookmarks = await response.json();
+      }
+      res(cachedBookmarks);
+    } else {
+      fs.readFile(`./server/data/${fileName}.json`, (err, data) => {
+        res(JSON.parse(data));
+      });
+    }
   });
 }
 
@@ -142,17 +161,7 @@ async function getCourses() {
 async function getUserMenu(userName) {
   let data;
   if (process.env["PORT"]) {
-    const response = await fetch(
-      `https://api.jsonbin.io/v3/b/${BookmarksBinId}`,
-      {
-        method: "GET",
-        headers: {
-          "X-Access-Key": AccessKey,
-          "X-Bin-Meta": false,
-        },
-      }
-    );
-    data = await response.json();
+    data = await getData();
   } else {
     data = await getData(FILES.personalMenu.fileName);
   }
@@ -162,17 +171,7 @@ async function getUserMenu(userName) {
 async function updateUserMenu(userName, userMenu) {
   return new Promise(async (res, rej) => {
     if (process.env["PORT"]) {
-      const response = await fetch(
-        `https://api.jsonbin.io/v3/b/${BookmarksBinId}`,
-        {
-          method: "GET",
-          headers: {
-            "X-Access-Key": AccessKey,
-            "X-Bin-Meta": false,
-          },
-        }
-      );
-      const data = await response.json();
+      const data = await getData();
       let userDataIndex = data.findIndex(
         (userData) => userData.userName === userName
       );
@@ -193,6 +192,9 @@ async function updateUserMenu(userName, userMenu) {
           body: JSON.stringify(data),
         }
       );
+      if (resp.status === 200) {
+        cachedBookmarks = data;
+      }
       res();
     } else {
       const data = await getData(FILES.personalMenu.fileName);

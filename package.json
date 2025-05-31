@@ -10,6 +10,7 @@
   "scripts": {
     "ng": "ng",
     "start": "tsx server/server",
+    "dev": "ng serve",
     "serv": "nodemon server/server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
